@@ -20,7 +20,7 @@ object paqueteDeLadrillos {
 }
 
 object arenaGranel{
-	var property peso
+	var property peso=0
 	
 	method nivelPeligrosidad()= 1
 }
