@@ -1,0 +1,69 @@
+import camion.*
+import cosas.*
+
+describe " test de camion"{
+
+fixture {
+	camion.cargar(knightRider)
+	camion.cargar(bumblebee)
+	camion.cargar(bateriaAntiarea)
+	
+	
+}
+test "knightRider,bumblebee y bateriaAntiarea estan cargadas en el camion" {
+
+	assert.equals([knightRider,bumblebee,bateriaAntiarea],camion.cosas())
+
+}
+
+test "peso total de la carga"{
+	
+	assert.equals(2600,camion.pesoTotal())
+}
+
+test "esta excedido  de peso"{
+	
+	assert.that(camion.excedidoDePeso())
+}
+
+test "No esta excedido  de peso"{
+	camion.descargar(knightRider)
+	assert.notThat(camion.excedidoDePeso())
+}
+
+test "objetos peligrosos 1"{
+	bateriaAntiarea.modificarMisiles()
+	assert.equals([knightRider,bumblebee],camion.objetosPeligrosos(8))
+}
+
+test "objetos peligrosos 2"{
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.equals([bateriaAntiarea,residuosRadioactivos],camion.objetosPeligrosos(80))
+}
+
+test "objetos mas peligrosos que bumblebee"{
+	bumblebee.transformar()
+	bateriaAntiarea.modificarMisiles()
+	camion.cargar(residuosRadioactivos)
+	assert.equals([residuosRadioactivos],camion.objetosMasPeligrososQue(bumblebee))
+}
+
+test "Pueden circular en ruta"{
+	embalajeDeSeguridad.cosa(residuosRadioactivos)
+	camion.cargar(embalajeDeSeguridad)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.that(camion.puedeCircularEnRuta(120))
+}
+
+test "No pueden circular en ruta"{
+
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.notThat(camion.puedeCircularEnRuta(20))
+}
+
+}
