@@ -30,4 +30,22 @@ object camion {
 	method puedeCircularEnRuta(nivelMaximoPeligrosidad){
 		return cosas.all({unaCosa => unaCosa.nivelPeligrosidad() < nivelMaximoPeligrosidad})
 	}
+	
+// AGREGADOS AL CAMION
+
+	method tieneAlgoQuePesaEntre(min,max){
+		return cosas.any({unaCosa=> unaCosa.peso().between(min,max)})
+	}
+	
+	method cosaMasPesada(){
+		return cosas.max({unaCosa => unaCosa.peso()})
+	}
+	
+	method totalBultos(){
+		return cosas.sum({unaCosa => unaCosa.bulto()})
+	}
+	
+	method pesos(){
+		return cosas.map({unaCosa => unaCosa.peso()})
+	}
 }

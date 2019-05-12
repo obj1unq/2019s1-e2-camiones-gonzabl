@@ -66,4 +66,50 @@ test "No pueden circular en ruta"{
 	assert.notThat(camion.puedeCircularEnRuta(20))
 }
 
+test "Tiene algo que pesa entre 200 y 400"{
+	
+	assert.that(camion.tieneAlgoQuePesaEntre(200,400))
+}
+
+test "Tiene algo que pesa entre 50 y 150"{
+	
+	assert.notThat(camion.tieneAlgoQuePesaEntre(50,150))
+}
+test "el mas pesado"{
+	
+	assert.equals(bumblebee,camion.cosaMasPesada())
+}
+
+test "lista de pesos"{
+	
+	assert.equals([500,800,300],camion.pesos())
+}
+
+
+test "total de bultos 9 con 90 ladrillos,residuos, arena y embalaje"{
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	paqueteDeLadrillos.cantDeLadrillos(90)
+	camion.cargar(paqueteDeLadrillos)
+	camion.cargar(embalajeDeSeguridad)
+	
+	
+	assert.equals(9,camion.totalBultos())
+}
+
+test "total de bultos 7, con 150 ladrillos y con bateriaAntiarea sin misiles"{
+	bateriaAntiarea.modificarMisiles()
+	paqueteDeLadrillos.cantDeLadrillos(150)
+	camion.cargar(paqueteDeLadrillos)
+	
+	assert.equals(7,camion.totalBultos())
+}
+
+test "total de bultos 6, con 315 ladrillos, sin bateriaAntiarea"{
+	camion.descargar(bateriaAntiarea)
+	paqueteDeLadrillos.cantDeLadrillos(315)
+	camion.cargar(paqueteDeLadrillos)
+	
+	assert.equals(6,camion.totalBultos())
+}
 }
