@@ -1,0 +1,115 @@
+import camion.*
+import cosas.*
+
+describe " test de camion"{
+
+fixture {
+	camion.cargar(knightRider)
+	camion.cargar(bumblebee)
+	camion.cargar(bateriaAntiarea)
+	
+	
+}
+test "knightRider,bumblebee y bateriaAntiarea estan cargadas en el camion" {
+
+	assert.equals([knightRider,bumblebee,bateriaAntiarea],camion.cosas())
+
+}
+
+test "peso total de la carga"{
+	
+	assert.equals(2600,camion.pesoTotal())
+}
+
+test "esta excedido  de peso"{
+	
+	assert.that(camion.excedidoDePeso())
+}
+
+test "No esta excedido  de peso"{
+	camion.descargar(knightRider)
+	assert.notThat(camion.excedidoDePeso())
+}
+
+test "objetos peligrosos 1"{
+	bateriaAntiarea.modificarMisiles()
+	assert.equals([knightRider,bumblebee],camion.objetosPeligrosos(8))
+}
+
+test "objetos peligrosos 2"{
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.equals([bateriaAntiarea,residuosRadioactivos],camion.objetosPeligrosos(80))
+}
+
+test "objetos mas peligrosos que bumblebee"{
+	bumblebee.transformar()
+	bateriaAntiarea.modificarMisiles()
+	camion.cargar(residuosRadioactivos)
+	assert.equals([residuosRadioactivos],camion.objetosMasPeligrososQue(bumblebee))
+}
+
+test "Pueden circular en ruta"{
+	embalajeDeSeguridad.cosa(residuosRadioactivos)
+	camion.cargar(embalajeDeSeguridad)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.that(camion.puedeCircularEnRuta(120))
+}
+
+test "No pueden circular en ruta"{
+
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	camion.cargar(paqueteDeLadrillos)
+	assert.notThat(camion.puedeCircularEnRuta(20))
+}
+
+test "Tiene algo que pesa entre 200 y 400"{
+	
+	assert.that(camion.tieneAlgoQuePesaEntre(200,400))
+}
+
+test "Tiene algo que pesa entre 50 y 150"{
+	
+	assert.notThat(camion.tieneAlgoQuePesaEntre(50,150))
+}
+test "el mas pesado"{
+	
+	assert.equals(bumblebee,camion.cosaMasPesada())
+}
+
+test "lista de pesos"{
+	
+	assert.equals([500,800,300],camion.pesos())
+}
+
+
+test "total de bultos 9 con 90 ladrillos,residuos, arena y embalaje"{
+	camion.cargar(residuosRadioactivos)
+	camion.cargar(arenaGranel)
+	paqueteDeLadrillos.cantDeLadrillos(90)
+	camion.cargar(paqueteDeLadrillos)
+	camion.cargar(embalajeDeSeguridad)
+	
+	
+	assert.equals(9,camion.totalBultos())
+}
+
+test "total de bultos 7, con 150 ladrillos y con bateriaAntiarea sin misiles"{
+	bateriaAntiarea.modificarMisiles()
+	paqueteDeLadrillos.cantDeLadrillos(150)
+	camion.cargar(paqueteDeLadrillos)
+	
+	assert.equals(7,camion.totalBultos())
+}
+
+test "total de bultos 6, con 315 ladrillos, sin bateriaAntiarea"{
+	camion.descargar(bateriaAntiarea)
+	paqueteDeLadrillos.cantDeLadrillos(315)
+	camion.cargar(paqueteDeLadrillos)
+	
+	assert.equals(6,camion.totalBultos())
+}
+}
